@@ -1,0 +1,510 @@
+iso3,country_name,name
+FJI,Fiji,fiji
+TZA,Tanzania,united republic of tanzania
+SAH,W. Sahara,western sahara
+CAN,Canada,canada
+USA,United States of America,united states of america
+KAZ,Kazakhstan,kazakhstan
+UZB,Uzbekistan,uzbekistan
+PNG,Papua New Guinea,papua new guinea
+IDN,Indonesia,indonesia
+ARG,Argentina,argentina
+CHL,Chile,chile
+COD,Dem. Rep. Congo,democratic republic of the congo
+SOM,Somalia,somalia
+KEN,Kenya,kenya
+SDN,Sudan,sudan
+TCD,Chad,chad
+HTI,Haiti,haiti
+DOM,Dominican Rep.,dominican republic
+RUS,Russia,russia
+BHS,Bahamas,the bahamas
+NOR,Norway,norway
+TLS,Timor-Leste,east timor
+ZAF,South Africa,south africa
+LSO,Lesotho,lesotho
+MEX,Mexico,mexico
+URY,Uruguay,uruguay
+BRA,Brazil,brazil
+BOL,Bolivia,bolivia
+PER,Peru,peru
+COL,Colombia,colombia
+PAN,Panama,panama
+CRI,Costa Rica,costa rica
+NIC,Nicaragua,nicaragua
+HND,Honduras,honduras
+SLV,El Salvador,el salvador
+GTM,Guatemala,guatemala
+BLZ,Belize,belize
+VEN,Venezuela,venezuela
+GUY,Guyana,guyana
+SUR,Suriname,suriname
+FRA,France,france
+ECU,Ecuador,ecuador
+JAM,Jamaica,jamaica
+CUB,Cuba,cuba
+ZWE,Zimbabwe,zimbabwe
+BWA,Botswana,botswana
+NAM,Namibia,namibia
+SEN,Senegal,senegal
+MLI,Mali,mali
+MRT,Mauritania,mauritania
+BEN,Benin,benin
+NER,Niger,niger
+NGA,Nigeria,nigeria
+CMR,Cameroon,cameroon
+TGO,Togo,togo
+GHA,Ghana,ghana
+CIV,Côte d'Ivoire,ivory coast
+GIN,Guinea,guinea
+GNB,Guinea-Bissau,guinea-bissau
+LBR,Liberia,liberia
+SLE,Sierra Leone,sierra leone
+BFA,Burkina Faso,burkina faso
+CAF,Central African Rep.,central african republic
+COG,Congo,republic of the congo
+GAB,Gabon,gabon
+GNQ,Eq. Guinea,equatorial guinea
+ZMB,Zambia,zambia
+MWI,Malawi,malawi
+MOZ,Mozambique,mozambique
+SWZ,eSwatini,eswatini
+AGO,Angola,angola
+BDI,Burundi,burundi
+ISR,Israel,israel
+LBN,Lebanon,lebanon
+MDG,Madagascar,madagascar
+GMB,Gambia,gambia
+TUN,Tunisia,tunisia
+DZA,Algeria,algeria
+JOR,Jordan,jordan
+ARE,United Arab Emirates,united arab emirates
+QAT,Qatar,qatar
+KWT,Kuwait,kuwait
+IRQ,Iraq,iraq
+OMN,Oman,oman
+VUT,Vanuatu,vanuatu
+KHM,Cambodia,cambodia
+THA,Thailand,thailand
+LAO,Laos,laos
+MMR,Myanmar,myanmar
+VNM,Vietnam,vietnam
+PRK,North Korea,north korea
+KOR,South Korea,south korea
+MNG,Mongolia,mongolia
+IND,India,india
+BGD,Bangladesh,bangladesh
+BTN,Bhutan,bhutan
+NPL,Nepal,nepal
+PAK,Pakistan,pakistan
+AFG,Afghanistan,afghanistan
+TJK,Tajikistan,tajikistan
+KGZ,Kyrgyzstan,kyrgyzstan
+TKM,Turkmenistan,turkmenistan
+IRN,Iran,iran
+SYR,Syria,syria
+ARM,Armenia,armenia
+SWE,Sweden,sweden
+BLR,Belarus,belarus
+UKR,Ukraine,ukraine
+POL,Poland,poland
+AUT,Austria,austria
+HUN,Hungary,hungary
+MDA,Moldova,moldova
+ROU,Romania,romania
+LTU,Lithuania,lithuania
+LVA,Latvia,latvia
+EST,Estonia,estonia
+DEU,Germany,germany
+BGR,Bulgaria,bulgaria
+GRC,Greece,greece
+TUR,Turkey,turkey
+ALB,Albania,albania
+HRV,Croatia,croatia
+CHE,Switzerland,switzerland
+LUX,Luxembourg,luxembourg
+BEL,Belgium,belgium
+NLD,Netherlands,netherlands
+PRT,Portugal,portugal
+ESP,Spain,spain
+IRL,Ireland,ireland
+SLB,Solomon Is.,solomon islands
+NZL,New Zealand,new zealand
+AUS,Australia,australia
+LKA,Sri Lanka,sri lanka
+CHN,China,china
+TWN,Taiwan,taiwan
+ITA,Italy,italy
+DNK,Denmark,denmark
+GBR,United Kingdom,united kingdom
+ISL,Iceland,iceland
+AZE,Azerbaijan,azerbaijan
+GEO,Georgia,georgia
+PHL,Philippines,philippines
+MYS,Malaysia,malaysia
+BRN,Brunei,brunei
+SVN,Slovenia,slovenia
+FIN,Finland,finland
+SVK,Slovakia,slovakia
+CZE,Czechia,czechia
+ERI,Eritrea,eritrea
+JPN,Japan,japan
+PRY,Paraguay,paraguay
+YEM,Yemen,yemen
+SAU,Saudi Arabia,saudi arabia
+ATA,Antarctica,antarctica
+CYN,N. Cyprus,northern cyprus
+CYP,Cyprus,cyprus
+MAR,Morocco,morocco
+EGY,Egypt,egypt
+LBY,Libya,libya
+ETH,Ethiopia,ethiopia
+DJI,Djibouti,djibouti
+SOL,Somaliland,somaliland
+UGA,Uganda,uganda
+RWA,Rwanda,rwanda
+BIH,Bosnia and Herz.,bosnia and herzegovina
+MKD,Macedonia,macedonia
+SRB,Serbia,republic of serbia
+MNE,Montenegro,montenegro
+KOS,Kosovo,kosovo
+TTO,Trinidad and Tobago,trinidad and tobago
+SDS,S. Sudan,south sudan
+TZA,Tanzania,tanzania
+USA,United States of America,united states
+RUS,Russia,russian federation
+BHS,Bahamas,bahamas
+TLS,Timor-Leste,timor-leste
+CIV,Côte d'Ivoire,côte d'ivoire
+PSX,Palestine,palestine
+GMB,Gambia,the gambia
+LAO,Laos,lao pdr
+PRK,North Korea,dem. rep. korea
+KOR,South Korea,republic of korea
+BRN,Brunei,brunei darussalam
+CZE,Czechia,czech republic
+SRB,Serbia,serbia
+SAH,W. Sahara,w. sahara
+DOM,Dominican Rep.,dominican rep.
+CAF,Central African Rep.,central african rep.
+GNQ,Eq. Guinea,eq. guinea
+SLB,Solomon Is.,solomon is.
+CYN,N. Cyprus,n. cyprus
+BIH,Bosnia and Herz.,bosnia and herz.
+SDS,S. Sudan,s. sudan
+TZA,Tanzania,tanz.
+SAH,W. Sahara,w. sah.
+CAN,Canada,can.
+USA,United States of America,u.s.a.
+KAZ,Kazakhstan,kaz.
+UZB,Uzbekistan,uzb.
+PNG,Papua New Guinea,p.n.g.
+IDN,Indonesia,indo.
+ARG,Argentina,arg.
+COD,Dem. Rep. Congo,d.r.c.
+SOM,Somalia,som.
+KEN,Kenya,ken.
+DOM,Dominican Rep.,dom. rep.
+RUS,Russia,rus.
+BHS,Bahamas,bhs.
+NOR,Norway,nor.
+TLS,Timor-Leste,t.l.
+ZAF,South Africa,s.af.
+LSO,Lesotho,les.
+MEX,Mexico,mex.
+URY,Uruguay,ury.
+COL,Colombia,col.
+PAN,Panama,pan.
+CRI,Costa Rica,c.r.
+NIC,Nicaragua,nic.
+HND,Honduras,hond.
+SLV,El Salvador,el. s.
+GTM,Guatemala,guat.
+VEN,Venezuela,ven.
+GUY,Guyana,guy.
+SUR,Suriname,sur.
+FRA,France,fr.
+ECU,Ecuador,ecu.
+JAM,Jamaica,jam.
+ZWE,Zimbabwe,zimb.
+BWA,Botswana,bwa.
+NAM,Namibia,nam.
+SEN,Senegal,sen.
+MRT,Mauritania,mrt.
+CMR,Cameroon,cam.
+CIV,Côte d'Ivoire,i.c.
+GIN,Guinea,gin.
+GNB,Guinea-Bissau,gnb.
+SLE,Sierra Leone,s.l.
+BFA,Burkina Faso,b.f.
+CAF,Central African Rep.,c.a.r.
+COG,Congo,rep. congo
+GNQ,Eq. Guinea,eq. g.
+MWI,Malawi,mal.
+MOZ,Mozambique,moz.
+SWZ,eSwatini,esw.
+AGO,Angola,ang.
+BDI,Burundi,bur.
+ISR,Israel,isr.
+LBN,Lebanon,leb.
+MDG,Madagascar,mad.
+PSX,Palestine,pal.
+TUN,Tunisia,tun.
+DZA,Algeria,alg.
+JOR,Jordan,jord.
+ARE,United Arab Emirates,u.a.e.
+KWT,Kuwait,kwt.
+VUT,Vanuatu,van.
+KHM,Cambodia,camb.
+THA,Thailand,thai.
+MMR,Myanmar,myan.
+VNM,Vietnam,viet.
+PRK,North Korea,n.k.
+KOR,South Korea,s.k.
+MNG,Mongolia,mong.
+BGD,Bangladesh,bang.
+PAK,Pakistan,pak.
+AFG,Afghanistan,afg.
+TJK,Tajikistan,tjk.
+KGZ,Kyrgyzstan,kgz.
+TKM,Turkmenistan,turkm.
+ARM,Armenia,arm.
+SWE,Sweden,swe.
+BLR,Belarus,bela.
+UKR,Ukraine,ukr.
+POL,Poland,pol.
+AUT,Austria,aust.
+HUN,Hungary,hun.
+MDA,Moldova,mda.
+ROU,Romania,rom.
+LTU,Lithuania,lith.
+LVA,Latvia,lat.
+EST,Estonia,est.
+DEU,Germany,ger.
+BGR,Bulgaria,bulg.
+TUR,Turkey,tur.
+ALB,Albania,alb.
+HRV,Croatia,cro.
+CHE,Switzerland,switz.
+LUX,Luxembourg,lux.
+BEL,Belgium,belg.
+NLD,Netherlands,neth.
+PRT,Portugal,port.
+ESP,Spain,sp.
+IRL,Ireland,ire.
+SLB,Solomon Is.,s. is.
+NZL,New Zealand,n.z.
+AUS,Australia,auz.
+LKA,Sri Lanka,sri l.
+DNK,Denmark,den.
+GBR,United Kingdom,u.k.
+AZE,Azerbaijan,aze.
+GEO,Georgia,geo.
+PHL,Philippines,phil.
+MYS,Malaysia,malay.
+SVN,Slovenia,slo.
+FIN,Finland,fin.
+SVK,Slovakia,svk.
+CZE,Czechia,cz.
+ERI,Eritrea,erit.
+PRY,Paraguay,para.
+YEM,Yemen,yem.
+SAU,Saudi Arabia,saud.
+ATA,Antarctica,ant.
+CYN,N. Cyprus,n. cy.
+CYP,Cyprus,cyp.
+MAR,Morocco,mor.
+ETH,Ethiopia,eth.
+DJI,Djibouti,dji.
+SOL,Somaliland,solnd.
+UGA,Uganda,uga.
+RWA,Rwanda,rwa.
+BIH,Bosnia and Herz.,b.h.
+MKD,Macedonia,mkd.
+SRB,Serbia,serb.
+MNE,Montenegro,mont.
+KOS,Kosovo,kos.
+TTO,Trinidad and Tobago,tr.t.
+SDS,S. Sudan,s. sud.
+FJI,Fiji,republic of fiji
+SAH,W. Sahara,sahrawi arab democratic republic
+KAZ,Kazakhstan,republic of kazakhstan
+UZB,Uzbekistan,republic of uzbekistan
+PNG,Papua New Guinea,independent state of papua new guinea
+IDN,Indonesia,republic of indonesia
+ARG,Argentina,argentine republic
+CHL,Chile,republic of chile
+SOM,Somalia,federal republic of somalia
+KEN,Kenya,republic of kenya
+SDN,Sudan,republic of the sudan
+TCD,Chad,republic of chad
+HTI,Haiti,republic of haiti
+BHS,Bahamas,commonwealth of the bahamas
+NOR,Norway,kingdom of norway
+TLS,Timor-Leste,democratic republic of timor-leste
+ZAF,South Africa,republic of south africa
+LSO,Lesotho,kingdom of lesotho
+MEX,Mexico,united mexican states
+URY,Uruguay,oriental republic of uruguay
+BRA,Brazil,federative republic of brazil
+BOL,Bolivia,plurinational state of bolivia
+PER,Peru,republic of peru
+COL,Colombia,republic of colombia
+PAN,Panama,republic of panama
+CRI,Costa Rica,republic of costa rica
+NIC,Nicaragua,republic of nicaragua
+HND,Honduras,republic of honduras
+SLV,El Salvador,republic of el salvador
+GTM,Guatemala,republic of guatemala
+VEN,Venezuela,bolivarian republic of venezuela
+GUY,Guyana,co-operative republic of guyana
+SUR,Suriname,republic of suriname
+FRA,France,french republic
+ECU,Ecuador,republic of ecuador
+CUB,Cuba,republic of cuba
+ZWE,Zimbabwe,republic of zimbabwe
+BWA,Botswana,republic of botswana
+NAM,Namibia,republic of namibia
+SEN,Senegal,republic of senegal
+MLI,Mali,republic of mali
+MRT,Mauritania,islamic republic of mauritania
+BEN,Benin,republic of benin
+NER,Niger,republic of niger
+NGA,Nigeria,federal republic of nigeria
+CMR,Cameroon,republic of cameroon
+TGO,Togo,togolese republic
+GHA,Ghana,republic of ghana
+CIV,Côte d'Ivoire,republic of ivory coast
+GIN,Guinea,republic of guinea
+GNB,Guinea-Bissau,republic of guinea-bissau
+LBR,Liberia,republic of liberia
+SLE,Sierra Leone,republic of sierra leone
+GAB,Gabon,gabonese republic
+GNQ,Eq. Guinea,republic of equatorial guinea
+ZMB,Zambia,republic of zambia
+MWI,Malawi,republic of malawi
+MOZ,Mozambique,republic of mozambique
+SWZ,eSwatini,kingdom of eswatini
+AGO,Angola,people's republic of angola
+BDI,Burundi,republic of burundi
+ISR,Israel,state of israel
+LBN,Lebanon,lebanese republic
+MDG,Madagascar,republic of madagascar
+PSX,Palestine,west bank and gaza
+GMB,Gambia,republic of the gambia
+TUN,Tunisia,republic of tunisia
+DZA,Algeria,people's democratic republic of algeria
+JOR,Jordan,hashemite kingdom of jordan
+QAT,Qatar,state of qatar
+KWT,Kuwait,state of kuwait
+IRQ,Iraq,republic of iraq
+OMN,Oman,sultanate of oman
+VUT,Vanuatu,republic of vanuatu
+KHM,Cambodia,kingdom of cambodia
+THA,Thailand,kingdom of thailand
+LAO,Laos,lao people's democratic republic
+MMR,Myanmar,republic of the union of myanmar
+VNM,Vietnam,socialist republic of vietnam
+PRK,North Korea,democratic people's republic of korea
+IND,India,republic of india
+BGD,Bangladesh,people's republic of bangladesh
+BTN,Bhutan,kingdom of bhutan
+PAK,Pakistan,islamic republic of pakistan
+AFG,Afghanistan,islamic state of afghanistan
+TJK,Tajikistan,republic of tajikistan
+KGZ,Kyrgyzstan,kyrgyz republic
+IRN,Iran,islamic republic of iran
+SYR,Syria,syrian arab republic
+ARM,Armenia,republic of armenia
+SWE,Sweden,kingdom of sweden
+BLR,Belarus,republic of belarus
+POL,Poland,republic of poland
+AUT,Austria,republic of austria
+HUN,Hungary,republic of hungary
+MDA,Moldova,republic of moldova
+LTU,Lithuania,republic of lithuania
+LVA,Latvia,republic of latvia
+EST,Estonia,republic of estonia
+DEU,Germany,federal republic of germany
+BGR,Bulgaria,republic of bulgaria
+GRC,Greece,hellenic republic
+TUR,Turkey,republic of turkey
+ALB,Albania,republic of albania
+HRV,Croatia,republic of croatia
+CHE,Switzerland,swiss confederation
+LUX,Luxembourg,grand duchy of luxembourg
+BEL,Belgium,kingdom of belgium
+NLD,Netherlands,kingdom of the netherlands
+PRT,Portugal,portuguese republic
+ESP,Spain,kingdom of spain
+AUS,Australia,commonwealth of australia
+LKA,Sri Lanka,democratic socialist republic of sri lanka
+CHN,China,people's republic of china
+ITA,Italy,italian republic
+DNK,Denmark,kingdom of denmark
+GBR,United Kingdom,united kingdom of great britain and northern ireland
+ISL,Iceland,republic of iceland
+AZE,Azerbaijan,republic of azerbaijan
+PHL,Philippines,republic of the philippines
+BRN,Brunei,negara brunei darussalam
+SVN,Slovenia,republic of slovenia
+FIN,Finland,republic of finland
+SVK,Slovakia,slovak republic
+ERI,Eritrea,state of eritrea
+PRY,Paraguay,republic of paraguay
+YEM,Yemen,republic of yemen
+SAU,Saudi Arabia,kingdom of saudi arabia
+CYN,N. Cyprus,turkish republic of northern cyprus
+CYP,Cyprus,republic of cyprus
+MAR,Morocco,kingdom of morocco
+EGY,Egypt,arab republic of egypt
+ETH,Ethiopia,federal democratic republic of ethiopia
+DJI,Djibouti,republic of djibouti
+SOL,Somaliland,republic of somaliland
+UGA,Uganda,republic of uganda
+RWA,Rwanda,republic of rwanda
+MKD,Macedonia,former yugoslav republic of macedonia
+KOS,Kosovo,republic of kosovo
+TTO,Trinidad and Tobago,republic of trinidad and tobago
+SDS,S. Sudan,republic of south sudan
+COD,Dem. Rep. Congo,"congo, dem. rep."
+BHS,Bahamas,"bahamas, the"
+VEN,Venezuela,"venezuela, rb"
+COG,Congo,"congo, rep."
+PSX,Palestine,palestine (west bank and gaza)
+GMB,Gambia,"gambia, the"
+PRK,North Korea,"korea, dem. rep."
+KOR,South Korea,"korea, rep."
+IRN,Iran,"iran, islamic rep."
+YEM,Yemen,"yemen, rep."
+CYN,N. Cyprus,"cyprus, northern"
+EGY,Egypt,"egypt, arab rep."
+MKD,Macedonia,"macedonia, fyr"
+CZE,Czechia,česko
+MKD,Macedonia,republic of macedonia
+COD,Dem. Rep. Congo,"congo, democratic republic of the"
+CIV,Côte d'Ivoire,cote d'ivoire
+COG,Congo,"congo, republic of the"
+MMR,Myanmar,burma
+PRK,North Korea,"korea, north"
+KOR,South Korea,"korea, south"
+GRL,Greenland,greenland
+USA,United States of America,usa
+USA,United States of America,u.s.
+USA,United States of America,us
+GBR,United Kingdom,england
+GBR,United Kingdom,uk
+BHR,Bahrain,bahrain
+HKG,Hong Kong,hong kong
+IRN,Iran,iran (islamic republic of)
+IRN,Iran,"iran, islamic republic of"
+FRA,France,french guiana
+GBR,United Kingdom,gibraltar
+KOR,South Korea,korea
+KOR,South Korea,"korea, republic of"
+MCO,Monoco,monaco
+USA,United States of America,puerto rico
+SGP,Singapore,singapore
+NLD,Netherlands,the netherlands
+VNM,Vietnam,viet nam
+CHN,China,the people's republic of china

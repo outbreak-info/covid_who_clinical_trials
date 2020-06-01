@@ -1,0 +1,49 @@
+WHO_id,outbreak_id
+Acronym,alternateName
+Bridged type,NA
+Bridging flag truefalse,NA
+Condition,healthCondition
+Contact Address,NA
+Contact Affiliation,author.affiliation
+Contact Email,NA
+Contact Firstname,author.name
+Contact Lastname,author.name
+Contact Tel,NA
+Countries,studyLocation.studyLocationCountry
+Date enrollement,studyEvent.studyEventDate
+Date registration,NA
+Date registration3,dateCreated
+Exclusion Criteria,eligibilityCriteria.exclusionCriteria
+Export date,curatedBy.versionDate
+Inclusion agemax,eligibilityCriteria.maxAge
+Inclusion agemin,eligibilityCriteria.minAge
+Inclusion Criteria,eligibilityCriteria.inclusionCriteria
+Inclusion gender,eligibilityCriteria.gender
+Intervention,interventions
+Intervention,armGroup.name
+Intervention,armGroup.intervention.name
+Last Refreshed on,NA
+other records,studyDesign.phase
+Phase,outcome.outcomeMeasure
+Primary outcome,sponsor.name
+Primary sponsor,alternateName
+Public title,studyStatus.status
+Recruitment Status,studyEvent.studyEventDate
+results date completed,studyEvent.studyEventDate
+results date posted,NA
+results url link,hasResults
+results yes no,NA
+Retrospective flag,name
+Scientific title,identifierSource
+Source Register,studyDesign.designModel
+Study design,studyDesign.studyType
+Study type,studyStatus.enrollmentCount
+Target size,identifier
+TrialID,_id
+TrialID,url
+web address,studyStatus.statusDate
+Last Refreshed on,studyDesign.designAllocation
+Study design,studyDesign.designTimePerspective
+Study design,studyDesign.designAllocation
+Study design,studyDesign.designAllocation
+Study design,
