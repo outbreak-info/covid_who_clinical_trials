@@ -11,9 +11,9 @@ MAP_VARS = ["@type", "abstract", "alternateName", "armGroup", "author", "curated
 
 # when code is exported, import becomes relative
 try:
-    from clinical_trials.who_parser import load_annotations as parser_func
+    from covid_who_clinical_trials.parser import load_annotations as parser_func
 except ImportError:
-    from .who_parser import load_annotations as parser_func
+    from .parser import load_annotations as parser_func
 
 
 class ClinicalTrialUploaderWHO(biothings.hub.dataload.uploader.BaseSourceUploader):
