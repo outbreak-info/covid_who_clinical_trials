@@ -661,7 +661,7 @@ def getWHOTrials(url, country_file, col_names):
     df["dateModified"] = df["Last Refreshed on"].apply(
         lambda x: formatDate(x, "%d %B %Y"))
     df["datePublished"] = None
-    df["curatedBy"] = df["Export date"].apply(lambda x: {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform",
+    df["curatedBy"] = df["Export date"].apply(lambda x: {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform", "identifier": "ICTRP",
                                                          "url": "https://www.who.int/ictrp/en/", "versionDate": formatDate(x, "%m/%d/%Y %H:%M:%S %p"), "curationDate": today})
     df["studyLocation"] = df.Countries.apply(lambda x: splitCountries(x, ctry_dict))
     df["healthCondition"] = df.Condition.apply(splitCondition)
