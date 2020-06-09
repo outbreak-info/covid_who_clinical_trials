@@ -21,7 +21,7 @@ class ClinicalTrialUploaderWHO(biothings.hub.dataload.uploader.BaseSourceUploade
     main_source = "covid_who_clinical_trials"
     name = "clinicaltrialswho"
     __metadata__ = {"src_meta": {
-        # license/terms unavailable?
+        "license_url": "https://www.who.int/about/who-we-are/publishing-policies/copyright",
         "url": "https://www.who.int/ictrp/en/"
     }}
     idconverter = None
