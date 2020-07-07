@@ -146,9 +146,9 @@ def splitCountries(countryString, ctry_dict):
 
 
 def splitCondition(conditionString):
-    if(conditionString == conditionString):
+    if((conditionString == conditionString) & (isinstance(conditionString, str))):
         conditions = [text.split(";") for text in conditionString.split("<br>")]
-        flat_list = [item.strip() for sublist in conditions for item in sublist]
+        flat_list = [item.strip() for sublist in conditions for item in sublist if isinstance(item, str) ]
         return([item for item in flat_list if item != ""])
 
 
@@ -631,7 +631,7 @@ def getInterventions(row):
 Main function to grab the WHO records for clinical trials.
 """
 
-def getWHOTrials(url, country_file, col_names):
+def getWHOTrials(url, country_file, col_names, returnDF=False):
     today = date.today().strftime("%Y-%m-%d")
     # Natural Earth file to normalize country names.
     ctry_dict = pd.read_csv(country_file).set_index("name").to_dict(orient="index")
@@ -682,12 +682,15 @@ def getWHOTrials(url, country_file, col_names):
         print(
             f"\n\n\nERROR: {sum(df.duplicated(subset='_id'))} duplicate IDs found:")
         print(dupes._id)
-    return df[col_names].to_json(orient="records")
-    # return(df)
+    if(returnDF):
+        return(df)
+    else:
+        return df[col_names].to_json(orient="records")
 
 
 
-# who = getWHOTrials(WHO_URL, COUNTRY_FILE, COL_NAMES)
+# who = getWHOTrials(WHO_URL, COUNTRY_FILE, COL_NAMES, True)
+# who.iloc[2]["healthCondition"]
 
 def load_annotations():
     docs = getWHOTrials(WHO_URL,COUNTRY_FILE, COL_NAMES)
