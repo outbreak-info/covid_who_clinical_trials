@@ -146,9 +146,10 @@ def splitCountries(countryString, ctry_dict):
 
 
 def splitCondition(conditionString):
-    conditions = [text.split(";") for text in conditionString.split("<br>")]
-    flat_list = [item.strip() for sublist in conditions for item in sublist]
-    return([item for item in flat_list if item != ""])
+    if(conditionString == conditionString):
+        conditions = [text.split(";") for text in conditionString.split("<br>")]
+        flat_list = [item.strip() for sublist in conditions for item in sublist]
+        return([item for item in flat_list if item != ""])
 
 
 def getWHOStatus(row):
