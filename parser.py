@@ -666,6 +666,7 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
                                                          "url": "https://www.who.int/ictrp/en/", "versionDate": formatDate(x, "%m/%d/%Y %H:%M:%S %p"), "curationDate": today})
     # df["studyLocation"] = df.Countries.apply(lambda x: splitCountries(x, ctry_dict))
     df["healthCondition"] = None
+    df["studyLocation"] = None
     # df["healthCondition"] = df.Condition.apply(splitCondition)
     df["studyStatus"] = df.apply(getWHOStatus, axis=1)
     df["studyEvent"] = df.apply(getWHOEvents, axis=1)
