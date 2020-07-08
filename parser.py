@@ -137,19 +137,19 @@ def standardizeCountry(input, ctry_dict, return_val = "country_name"):
         return(input)
 
 
-def splitCountries(countryString, ctry_dict):
-    if(countryString == countryString):
-        # commas are both used as delimiters and in country names (sigh)
-        countryNorm = countryString.replace("Virgin Islands, U.S.", "United States of America").replace("Virgin Islands, British", "United Kingdom").replace("Korea, North", "North Korea").replace("Korea, South", "South Korea").replace("Korea, Republic of", "South Korea").replace("Iran, Islamic Republic of", "Iran").replace("Congo, ", "South Korea")
-        ctries = re.split(",|;", countryNorm)
-        return([{"@type": "Place", "studyLocationCountry": standardizeCountry(country, ctry_dict)} for country in ctries])
-
-
-def splitCondition(conditionString):
-    if((conditionString == conditionString) & (isinstance(conditionString, str))):
-        conditions = [text.split(";") for text in conditionString.split("<br>")]
-        flat_list = [item.strip() for sublist in conditions for item in sublist if isinstance(item, str) ]
-        return([item for item in flat_list if item != ""])
+# def splitCountries(countryString, ctry_dict):
+#     if(countryString == countryString):
+#         # commas are both used as delimiters and in country names (sigh)
+#         countryNorm = countryString.replace("Virgin Islands, U.S.", "United States of America").replace("Virgin Islands, British", "United Kingdom").replace("Korea, North", "North Korea").replace("Korea, South", "South Korea").replace("Korea, Republic of", "South Korea").replace("Iran, Islamic Republic of", "Iran").replace("Congo, ", "South Korea")
+#         ctries = re.split(",|;", countryNorm)
+#         return([{"@type": "Place", "studyLocationCountry": standardizeCountry(country, ctry_dict)} for country in ctries])
+#
+#
+# def splitCondition(conditionString):
+#     if((conditionString == conditionString) & (isinstance(conditionString, str))):
+#         conditions = [text.split(";") for text in conditionString.split("<br>")]
+#         flat_list = [item.strip() for sublist in conditions for item in sublist if isinstance(item, str) ]
+#         return([item for item in flat_list if item != ""])
 
 
 def getWHOStatus(row):
@@ -664,7 +664,7 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
     df["datePublished"] = None
     df["curatedBy"] = df["Export date"].apply(lambda x: {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform", "identifier": "ICTRP",
                                                          "url": "https://www.who.int/ictrp/en/", "versionDate": formatDate(x, "%m/%d/%Y %H:%M:%S %p"), "curationDate": today})
-    df["studyLocation"] = df.Countries.apply(lambda x: splitCountries(x, ctry_dict))
+    # df["studyLocation"] = df.Countries.apply(lambda x: splitCountries(x, ctry_dict))
     df["healthCondition"] = None
     # df["healthCondition"] = df.Condition.apply(splitCondition)
     df["studyStatus"] = df.apply(getWHOStatus, axis=1)
