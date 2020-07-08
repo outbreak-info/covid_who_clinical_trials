@@ -145,17 +145,17 @@ def splitCountries(countryString, ctry_dict):
         return([{"@type": "Place", "studyLocationCountry": standardizeCountry(country, ctry_dict)} for country in ctries])
 
 
-# def splitCondition(conditionString):
-#     if((conditionString == conditionString) & (isinstance(conditionString, str))):
-#         conditions = [text.split(";") for text in conditionString.split("<br>")]
-#         flat_list = [item.strip() for sublist in conditions for item in sublist if isinstance(item, str) ]
-#         return([item for item in flat_list if item != ""])
+def splitCondition(conditionString):
+    if((conditionString == conditionString) & (isinstance(conditionString, str))):
+        conditions = [text.split(";") for text in conditionString.split("<br>")]
+        flat_list = [item.strip() for sublist in conditions for item in sublist if isinstance(item, str) ]
+        return([item for item in flat_list if item != ""])
 
 
 def getWHOStatus(row):
     obj = {"@type": "StudyStatus"}
     if(row["Recruitment Status"] == row["Recruitment Status"]):
-        obj["status"] = row["Recruitment Status"].lower()
+        obj["status"] = row["Recruitment Status"].lower()   
     obj["statusDate"] = row.dateModified
 
     if(row["Target size"] == row["Target size"]):
@@ -665,8 +665,8 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
     df["curatedBy"] = df["Export date"].apply(lambda x: {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform", "identifier": "ICTRP",
                                                          "url": "https://www.who.int/ictrp/en/", "versionDate": formatDate(x, "%m/%d/%Y %H:%M:%S %p"), "curationDate": today})
     df["studyLocation"] = df.Countries.apply(lambda x: splitCountries(x, ctry_dict))
-    df["healthCondition"] = None
-    # df["healthCondition"] = df.Condition.apply(splitCondition)
+    # df["healthCondition"] = None
+    df["healthCondition"] = df.Condition.apply(splitCondition)
     df["studyStatus"] = df.apply(getWHOStatus, axis=1)
     df["studyEvent"] = df.apply(getWHOEvents, axis=1)
     df["eligibilityCriteria"] = df.apply(getWHOEligibility, axis=1)
