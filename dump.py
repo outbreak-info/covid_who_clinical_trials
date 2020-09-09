@@ -13,4 +13,4 @@ class ClinicalTrialDumper(biothings.hub.dataload.dumper.DummyDumper):
     # override in subclass accordingly
     SRC_ROOT_FOLDER = os.path.join(DATA_ARCHIVE_ROOT, SRC_NAME)
 
-    SCHEDULE = "20 14 * * *"  # daily at 14:20UTC/7:20PT
+    SCHEDULE = "0 7 * * *"  # daily at 14:20UTC/7:20PT
