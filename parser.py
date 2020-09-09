@@ -38,7 +38,7 @@ WHO_URL = "https://www.who.int/ictrp/COVID19-web.csv"
 # Names derived from Natural Earth to standardize to their ISO3 code (ADM0_A3) and NAME for geo-joins: https://www.naturalearthdata.com/downloads/10m-cultural-vectors/
 dirname =os.path.dirname(os.path.realpath("naturalearth_countries.csv"))
 COUNTRY_FILE = "https://raw.githubusercontent.com/flaneuse/clinical_trials/master/naturalearth_countries.csv"
-COL_NAMES = ["@type", "_id", "identifier", "identifierSource", "url", "name", "alternateName", "abstract", "description", "sponsor", "author",
+COL_NAMES = ["@type", "_id", "identifier", "identifierSource", "url", "name", "alternateName", "abstract", "description", "funding", "author",
              "studyStatus", "studyEvent", "hasResults", "dateCreated", "datePublished", "dateModified", "curatedBy", "healthCondition", "keywords",
              "studyDesign", "outcome", "eligibilityCriteria", "isBasedOn", "relatedTo", "studyLocation", "armGroup", "interventions", "interventionText"]
 
@@ -155,7 +155,7 @@ def splitCondition(conditionString):
 def getWHOStatus(row):
     obj = {"@type": "StudyStatus"}
     if(row["Recruitment Status"] == row["Recruitment Status"]):
-        obj["status"] = row["Recruitment Status"].lower()   
+        obj["status"] = row["Recruitment Status"].lower()
     obj["statusDate"] = row.dateModified
 
     if(row["Target size"] == row["Target size"]):
@@ -654,8 +654,8 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
     df["isBasedOn"] = None
     df["relatedTo"] = None
     df["keywords"] = None
-    df["sponsor"] = df["Primary sponsor"].apply(
-        lambda x: [{"@type": "Organization", "name": x, "role": "lead sponsor"}])
+    df["funding"] = df["Primary sponsor"].apply(
+        lambda x: [{"funder": [{"@type": "Organization", "name": x, "role": "lead sponsor"}]}])
     df["hasResults"] = df["results yes no"].apply(binarize)
     df["dateCreated"] = df["Date registration3"].apply(
         lambda x: formatDate(x, "%Y%m%d"))
@@ -691,7 +691,7 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
 
 
 # who = getWHOTrials(WHO_URL, COUNTRY_FILE, COL_NAMES, True)
-# who.iloc[2]["healthCondition"]
+# who.iloc[2]["funding"]
 
 def load_annotations():
     docs = getWHOTrials(WHO_URL,COUNTRY_FILE, COL_NAMES)
