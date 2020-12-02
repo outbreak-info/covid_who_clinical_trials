@@ -133,7 +133,7 @@ def standardizeCountry(input, ctry_dict, return_val = "country_name"):
     try:
         return(ctry_dict[input.strip().lower()]["country_name"])
     except:
-        print(f"No match found for country {input}")
+        #print(f"No match found for country {input}")
         return(input)
 
 
@@ -680,9 +680,9 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
     # Double check that the numbers all agree
     if(sum(df.duplicated(subset="_id"))):
         dupes = df[df.duplicated(subset="_id")]
-        print(
-            f"\n\n\nERROR: {sum(df.duplicated(subset='_id'))} duplicate IDs found:")
-        print(dupes._id)
+        #print(
+        #    f"\n\n\nERROR: {sum(df.duplicated(subset='_id'))} duplicate IDs found:")
+        #print(dupes._id)
     if(returnDF):
         return(df)
     else:
