@@ -7,6 +7,8 @@ import json
 import os
 from datetime import date, datetime
 
+from urllib.request import Request, urlopen
+
 """
 Parser to grab COVID-19 / SARS-Cov-2 Clinical Trials metadata from the WHO's trial registry.
 Sources:
@@ -46,7 +48,7 @@ COL_NAMES = ["@type", "_id", "identifier", "identifierSource", "url", "name", "a
 
 
 def formatDate(x, inputFormat="%B %d, %Y", outputFormat="%Y-%m-%d"):
-    date_str = pd.datetime.strptime(x, inputFormat).strftime(outputFormat)
+    date_str = datetime.strptime(x, inputFormat).strftime(outputFormat)
     return(date_str)
 
 
@@ -636,7 +638,10 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
     # Natural Earth file to normalize country names.
     ctry_dict = pd.read_csv(country_file).set_index("name").to_dict(orient="index")
 
-    raw = pd.read_csv(WHO_URL, dtype={"Date registration3": str})
+    raw_req = Request(WHO_URL)
+    raw_req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0')
+    raw_content = urlopen(raw_req)
+    raw = pd.read_csv(raw_content, dtype={"Date registration3": str})
     # Remove the data from ClinicalTrials.gov
     df = raw.loc[raw["Source Register"] != "ClinicalTrials.gov", :]
     df = df.copy()
