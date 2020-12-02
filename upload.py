@@ -16,11 +16,9 @@ except ImportError:
     from .parser import load_annotations as parser_func
 
 logger = config.logger
-import time
 
 class ClinicalTrialUploaderWHO(biothings.hub.dataload.uploader.BaseSourceUploader):
     def __init__(self, *args, **kwargs):
-        time.sleep(30)
         super().__init__(*args, **kwargs)
         logger.warning("trial upload before crash")
 
