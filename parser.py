@@ -48,8 +48,11 @@ COL_NAMES = ["@type", "_id", "identifier", "identifierSource", "url", "name", "a
 
 
 def formatDate(x, inputFormat="%B %d, %Y", outputFormat="%Y-%m-%d"):
-    date_str = datetime.strptime(x, inputFormat).strftime(outputFormat)
-    return(date_str)
+    try:
+        date_str = datetime.strptime(x, inputFormat).strftime(outputFormat)
+        return(date_str)
+    except:
+        print(f"Cannot format date {x}")
 
 
 def binarize(val):
