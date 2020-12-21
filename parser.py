@@ -9,6 +9,10 @@ from datetime import date, datetime
 
 from urllib.request import Request, urlopen
 
+from biothings import config
+logging = config.logger
+
+
 """
 Parser to grab COVID-19 / SARS-Cov-2 Clinical Trials metadata from the WHO's trial registry.
 Sources:
@@ -639,66 +643,70 @@ Main function to grab the WHO records for clinical trials.
 def getWHOTrials(url, country_file, col_names, returnDF=False):
     today = date.today().strftime("%Y-%m-%d")
     # Natural Earth file to normalize country names.
-    ctry_dict = pd.read_csv(country_file).set_index("name").to_dict(orient="index")
+    try:
+        ctry_dict = pd.read_csv(country_file).set_index("name").to_dict(orient="index")
 
-    raw_req = Request(WHO_URL)
-    raw_req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0')
-    raw_content = urlopen(raw_req)
-    raw = pd.read_csv(raw_content, dtype={"Date registration3": str})
-    # Remove the data from ClinicalTrials.gov
-    df = raw.loc[raw["Source Register"] != "ClinicalTrials.gov", :]
-    df = df.copy()
+        raw_req = Request(WHO_URL)
+        raw_req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0')
+        raw_content = urlopen(raw_req)
+        raw = pd.read_csv(raw_content, dtype={"Date registration3": str})
+        # Remove the data from ClinicalTrials.gov
+        df = raw.loc[raw["Source Register"] != "ClinicalTrials.gov", :]
+        df = df.copy()
 
-    df["@type"] = "ClinicalTrial"
-    df["_id"] = df.TrialID
-    df["identifier"] = df.TrialID
-    df["url"] = df["web address"]
-    df["identifierSource"] = df["Source Register"].apply(convertSource)
-    df["name"] = df["Scientific title"].apply(lambda x: x.strip())
-    df["alternateName"] = df.apply(
-        lambda x: listify(x, ["Acronym", "Public title"]), axis=1)
-    df["abstract"] = None
-    df["description"] = None
-    df["isBasedOn"] = None
-    df["relatedTo"] = None
-    df["keywords"] = None
-    df["funding"] = df["Primary sponsor"].apply(
-        lambda x: [{"funder": [{"@type": "Organization", "name": x, "role": "lead sponsor"}]}])
-    df["hasResults"] = df["results yes no"].apply(binarize)
-    df["dateCreated"] = df["Date registration3"].apply(
-        lambda x: formatDate(x, "%Y%m%d"))
-    df["dateModified"] = df["Last Refreshed on"].apply(
-        lambda x: formatDate(x, "%d %B %Y"))
-    df["datePublished"] = None
-    df["curatedBy"] = df["Export date"].apply(lambda x: {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform", "identifier": "ICTRP",
-                                                         "url": "https://www.who.int/ictrp/en/", "versionDate": formatDate(x, "%m/%d/%Y %H:%M:%S %p"), "curationDate": today})
-    df["studyLocation"] = df.Countries.apply(lambda x: splitCountries(x, ctry_dict))
-    # df["healthCondition"] = None
-    df["healthCondition"] = df.Condition.apply(splitCondition)
-    df["studyStatus"] = df.apply(getWHOStatus, axis=1)
-    df["studyEvent"] = df.apply(getWHOEvents, axis=1)
-    df["eligibilityCriteria"] = df.apply(getWHOEligibility, axis=1)
-    df["author"] = df.apply(getWHOAuthors, axis=1)
-    df["studyDesign"] = df.apply(getWHODesign, axis=1)
-    df["armGroup"] = df.apply(getArms, axis=1)
-    df["interventions"] = df.apply(getInterventions, axis=1)
-    df["interventionText"] = df.Intervention # creating a copy, since parsing is icky.
-    df["outcome"] = df["Primary outcome"].apply(getOutcome)
+        df["@type"] = "ClinicalTrial"
+        df["_id"] = df.TrialID
+        df["identifier"] = df.TrialID
+        df["url"] = df["web address"]
+        df["identifierSource"] = df["Source Register"].apply(convertSource)
+        df["name"] = df["Scientific title"].apply(lambda x: x.strip())
+        df["alternateName"] = df.apply(
+            lambda x: listify(x, ["Acronym", "Public title"]), axis=1)
+        df["abstract"] = None
+        df["description"] = None
+        df["isBasedOn"] = None
+        df["relatedTo"] = None
+        df["keywords"] = None
+        df["funding"] = df["Primary sponsor"].apply(
+            lambda x: [{"funder": [{"@type": "Organization", "name": x, "role": "lead sponsor"}]}])
+        df["hasResults"] = df["results yes no"].apply(binarize)
+        df["dateCreated"] = df["Date registration3"].apply(
+            lambda x: formatDate(x, "%Y%m%d"))
+        df["dateModified"] = df["Last Refreshed on"].apply(
+            lambda x: formatDate(x, "%d %B %Y"))
+        df["datePublished"] = None
+        df["curatedBy"] = df["Export date"].apply(lambda x: {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform", "identifier": "ICTRP",
+                                                             "url": "https://www.who.int/ictrp/en/", "versionDate": formatDate(x, "%m/%d/%Y %H:%M:%S %p"), "curationDate": today})
+        df["studyLocation"] = df.Countries.apply(lambda x: splitCountries(x, ctry_dict))
+        # df["healthCondition"] = None
+        df["healthCondition"] = df.Condition.apply(splitCondition)
+        df["studyStatus"] = df.apply(getWHOStatus, axis=1)
+        df["studyEvent"] = df.apply(getWHOEvents, axis=1)
+        df["eligibilityCriteria"] = df.apply(getWHOEligibility, axis=1)
+        df["author"] = df.apply(getWHOAuthors, axis=1)
+        df["studyDesign"] = df.apply(getWHODesign, axis=1)
+        df["armGroup"] = df.apply(getArms, axis=1)
+        df["interventions"] = df.apply(getInterventions, axis=1)
+        df["interventionText"] = df.Intervention # creating a copy, since parsing is icky.
+        df["outcome"] = df["Primary outcome"].apply(getOutcome)
 
-    # Double check that the numbers all agree
-    if(sum(df.duplicated(subset="_id"))):
-        dupes = df[df.duplicated(subset="_id")]
-        print(
-            f"\n\n\nERROR: {sum(df.duplicated(subset='_id'))} duplicate IDs found:")
-        print(dupes._id)
-    if(returnDF):
-        return(df)
-    else:
-        return df[col_names].to_json(orient="records")
-
+        # Double check that the numbers all agree
+        if(sum(df.duplicated(subset="_id"))):
+            dupes = df[df.duplicated(subset="_id")]
+            print(
+                f"\n\n\nERROR: {sum(df.duplicated(subset='_id'))} duplicate IDs found:")
+            print(dupes._id)
+        if(returnDF):
+            return(df)
+        else:
+            return df[col_names].to_json(orient="records")
+    except:
+        print("ERROR!  Cannot load the WHO Clinical Trials .csv")
+        logging.warning("ERROR!  Cannot load the WHO Clinical Trials .csv")
 
 
 # who = getWHOTrials(WHO_URL, COUNTRY_FILE, COL_NAMES, True)
+
 # who.iloc[2]["funding"]
 
 def load_annotations():
