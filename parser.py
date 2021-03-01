@@ -15,6 +15,7 @@ logging = config.logger
 
 """
 Parser to grab COVID-19 / SARS-Cov-2 Clinical Trials metadata from the WHO's trial registry.
+Note that as of 2021, the file is hosted on sharepoint and is available for download manually as an xlsx file
 Sources:
 - WHO data: https://www.who.int/ictrp/COVID19-web.csv
 - WHO data dictionary: https://www.who.int/ictrp/glossary/en/
@@ -40,7 +41,8 @@ Sources:
     - The Netherlands National Trial Register (NTR)
 """
 
-WHO_URL = "https://www.who.int/ictrp/COVID19-web.csv"
+#WHO_URL = "https://www.who.int/ictrp/COVID19-web.csv"
+DATA_PATH = #PATH FOR THE MANUALLY DOWNLOADED WHO DATA XLSX FILE
 # Names derived from Natural Earth to standardize to their ISO3 code (ADM0_A3) and NAME for geo-joins: https://www.naturalearthdata.com/downloads/10m-cultural-vectors/
 dirname =os.path.dirname(os.path.realpath("naturalearth_countries.csv"))
 COUNTRY_FILE = "https://raw.githubusercontent.com/flaneuse/clinical_trials/master/naturalearth_countries.csv"
@@ -640,16 +642,14 @@ def getInterventions(row):
 Main function to grab the WHO records for clinical trials.
 """
 
-def getWHOTrials(url, country_file, col_names, returnDF=False):
+def getWHOTrials(DATA_PATH, country_file, col_names, returnDF=False):
     today = date.today().strftime("%Y-%m-%d")
     # Natural Earth file to normalize country names.
     try:
         ctry_dict = pd.read_csv(country_file).set_index("name").to_dict(orient="index")
 
-        raw_req = Request(WHO_URL)
-        raw_req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0')
-        raw_content = urlopen(raw_req)
-        raw = pd.read_csv(raw_content, dtype={"Date registration3": str})
+        raw_content = DATA_PATH+'COVID19-web.xlsx'
+        raw = pd.read_excel(raw_content, dtype={"Date registration3": str}, engine='openpyxl')
         # Remove the data from ClinicalTrials.gov
         df = raw.loc[raw["Source Register"] != "ClinicalTrials.gov", :]
         df = df.copy()
@@ -672,8 +672,7 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
         df["hasResults"] = df["results yes no"].apply(binarize)
         df["dateCreated"] = df["Date registration3"].apply(
             lambda x: formatDate(x, "%Y%m%d"))
-        df["dateModified"] = df["Last Refreshed on"].apply(
-            lambda x: formatDate(x, "%d %B %Y"))
+        df["dateModified"] = df["Last Refreshed on"].dt.strftime("%Y-%m-%d")
         df["datePublished"] = None
         df["curatedBy"] = df["Export date"].apply(lambda x: {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform", "identifier": "ICTRP",
                                                              "url": "https://www.who.int/ictrp/en/", "versionDate": formatDate(x, "%m/%d/%Y %H:%M:%S %p"), "curationDate": today})
@@ -710,7 +709,7 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
 # who.iloc[2]["funding"]
 
 def load_annotations():
-    docs = getWHOTrials(WHO_URL,COUNTRY_FILE, COL_NAMES)
+    docs = getWHOTrials(DATA_PATH,COUNTRY_FILE, COL_NAMES)
     for doc in json.loads(docs):
         yield doc
 
