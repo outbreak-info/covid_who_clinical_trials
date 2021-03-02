@@ -638,6 +638,47 @@ def getInterventions(row):
                             obj["identifier"] = parsed["CAS Number"]
                         arr.append(obj)
             return(arr)
+        
+
+def get_country_iso(): 
+    from collections import OrderedDict
+    url = 'https://query.wikidata.org/sparql'
+    query = """
+    SELECT
+      ?item ?itemLabel ?itemAltLabel
+      ?value 
+    WHERE 
+    {
+      ?item wdt:P298 ?value        
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+    }
+    """
+    r = requests.get(url, params = {'format': 'json', 'query': query})
+    data = r.json()
+    countries = []
+    for item in data['results']['bindings']:
+        try:
+            tmp= item['itemAltLabel']['value'].split(',')
+            for altname in tmp:
+                if len(altname.strip())>3:
+                    countries.append(OrderedDict({
+                    'iso3': item['value']['value'],
+                    'country_name': item['itemLabel']['value'],
+                    'name': item['itemLabel']['value'].lower(),
+                    'alias': altname.strip().lower()
+                    }))
+        except:
+            countries.append(OrderedDict({
+            'iso3': item['value']['value'],
+            'country_name': item['itemLabel']['value'],
+            'name': item['itemLabel']['value'].lower(),
+            'alias': "None"
+            }))
+    wikicountry = pd.DataFrame(countries)
+    wikialias = wikicountry[['iso3','country_name','alias']].loc[wikicountry['alias']!="None"].copy()
+    wikialias.rename(columns={'alias':'name'},inplace=True)
+    return(wikialias)
+        
 """
 Main function to grab the WHO records for clinical trials.
 """
@@ -646,8 +687,11 @@ def getWHOTrials(DATA_PATH, country_file, col_names, returnDF=False):
     today = date.today().strftime("%Y-%m-%d")
     # Natural Earth file to normalize country names.
     try:
-        ctry_dict = pd.read_csv(country_file).set_index("name").to_dict(orient="index")
-
+        ctry_df = pd.read_csv(country_file)
+        wikialias = get_country_iso()
+        combined = pd.concat((ctry_df,wikialias)).drop_duplicates(subset='name',keep='first')
+        ctry_dict = combined.set_index("name").to_dict(orient="index")
+        
         raw_content = os.path.join(DATA_PATH, 'COVID19-web.xlsx'
         raw = pd.read_excel(raw_content, dtype={"Date registration3": str}, engine='openpyxl')
         # Remove the data from ClinicalTrials.gov
