@@ -15,6 +15,7 @@ logging = config.logger
 
 """
 Parser to grab COVID-19 / SARS-Cov-2 Clinical Trials metadata from the WHO's trial registry.
+Note that as of 2021, the file is hosted on sharepoint and is available for download manually as an xlsx file
 Sources:
 - WHO data: https://www.who.int/ictrp/COVID19-web.csv
 - WHO data dictionary: https://www.who.int/ictrp/glossary/en/
@@ -40,13 +41,14 @@ Sources:
     - The Netherlands National Trial Register (NTR)
 """
 
-WHO_URL = "https://www.who.int/ictrp/COVID19-web.csv"
+#WHO_URL = "https://www.who.int/ictrp/COVID19-web.csv"
+DATA_PATH = #PATH FOR THE MANUALLY DOWNLOADED WHO DATA XLSX FILE
 # Names derived from Natural Earth to standardize to their ISO3 code (ADM0_A3) and NAME for geo-joins: https://www.naturalearthdata.com/downloads/10m-cultural-vectors/
 dirname =os.path.dirname(os.path.realpath("naturalearth_countries.csv"))
 COUNTRY_FILE = "https://raw.githubusercontent.com/flaneuse/clinical_trials/master/naturalearth_countries.csv"
 COL_NAMES = ["@type", "_id", "identifier", "identifierSource", "url", "name", "alternateName", "abstract", "description", "funding", "author",
              "studyStatus", "studyEvent", "hasResults", "dateCreated", "datePublished", "dateModified", "curatedBy", "healthCondition", "keywords",
-             "studyDesign", "outcome", "eligibilityCriteria", "isBasedOn", "relatedTo", "studyLocation", "armGroup", "interventions", "interventionText"]
+             "studyDesign", "outcome", "eligibilityCriteria", "isBasedOn", "isRelatedTo", "studyLocation", "armGroup", "interventions", "interventionText"]
 
 # Generic helper functions
 
@@ -161,6 +163,7 @@ def splitCondition(conditionString):
         return([item for item in flat_list if item != ""])
 
 
+
 def getWHOStatus(row):
     obj = {"@type": "StudyStatus"}
     if(row["Recruitment Status"] == row["Recruitment Status"]):
@@ -169,7 +172,7 @@ def getWHOStatus(row):
 
     if(row["Target size"] == row["Target size"]):
         armTargets = [text.split(":")
-                      for text in row["Target size"].split(";")]
+                      for text in str(row["Target size"]).split(";")]
         targets = []
         for target in armTargets:
             if(len(target) == 2):
@@ -189,7 +192,6 @@ def getWHOStatus(row):
             obj["enrollmentCount"] = enrollmentTarget
             obj["enrollmentType"] = "anticipated"
     return(obj)
-
 
 def getWHOEvents(row):
     arr = []
@@ -217,14 +219,14 @@ def getWHOEligibility(row):
         else:
             obj["exclusionCriteria"] = []
     if(row["Exclusion Criteria"] == row["Exclusion Criteria"]):
-        obj["exclusionCriteria"].append(row["Exclusion Criteria"].replace(
+        obj["exclusionCriteria"].append(str(row["Exclusion Criteria"]).replace(
             "Exclusion criteria:", "").replace("Exclusion Criteria:", "").strip())
     if(row["Inclusion agemin"] == row["Inclusion agemin"]):
-        obj["minimumAge"] = row["Inclusion agemin"].lower()
+        obj["minimumAge"] = str(row["Inclusion agemin"]).lower()
     if(row["Inclusion agemax"] == row["Inclusion agemax"]):
-        obj["maximumAge"] = row["Inclusion agemax"].lower()
+        obj["maximumAge"] = str(row["Inclusion agemax"]).lower()
     if(row["Inclusion gender"] == row["Inclusion gender"]):
-        obj["gender"] = row["Inclusion gender"].lower()
+        obj["gender"] = str(row["Inclusion gender"]).lower()
     return([obj])
 
 
@@ -557,19 +559,19 @@ def standardizeTime(design_str):
 
 def getWHODesign(row):
     obj = {"@type": "StudyDesign"}
-    obj["studyType"] = standardizeType(row["Study type"])
-    obj["phase"] = standardizePhase(row["Phase"])
+    obj["studyType"] = standardizeType(str(row["Study type"]))
+    obj["phase"] = standardizePhase(str(row["Phase"]))
     if(obj["phase"] is not None):
         phases = [getPhaseNumber(
             phase) for phase in obj["phase"]]
         obj["phaseNumber"] = list(flatten(phases))
     if(row["Study design"] == row["Study design"]):
-        obj["designAllocation"] = standardizeAllocation(row["Study design"])
+        obj["designAllocation"] = standardizeAllocation(str(row["Study design"]))
         models = []
-        designModel = standardizeModel(row["Study design"])
+        designModel = standardizeModel(str(row["Study design"]))
         if(designModel is not None):
             models.append(designModel)
-        modelTime = standardizeTime(row["Study design"])
+        modelTime = standardizeTime(str(row["Study design"]))
         if(modelTime is not None):
             models.append(modelTime)
         obj["designModel"] = models
@@ -636,20 +638,70 @@ def getInterventions(row):
                             obj["identifier"] = parsed["CAS Number"]
                         arr.append(obj)
             return(arr)
+        
+        
+def get_country_iso(): 
+    from collections import OrderedDict
+    url = 'https://query.wikidata.org/sparql'
+    query = """
+    SELECT
+      ?item ?itemLabel ?itemAltLabel
+      ?value 
+    WHERE 
+    {
+      ?item wdt:P298 ?value        
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+    }
+    """
+    r = requests.get(url, params = {'format': 'json', 'query': query})
+    data = r.json()
+    countries = []
+    for item in data['results']['bindings']:
+        try:
+            countries.append(OrderedDict({
+            'iso3': item['value']['value'],
+            'country_name': item['itemLabel']['value'],
+            'name': item['itemLabel']['value'].lower(),
+            'alias': "None"}))
+            tmp= item['itemAltLabel']['value'].split(',')
+            for altname in tmp:
+                if len(altname.strip())>3:
+                    countries.append(OrderedDict({
+                    'iso3': item['value']['value'],
+                    'country_name': item['itemLabel']['value'],
+                    'name': item['itemLabel']['value'].lower(),
+                    'alias': altname.strip().lower()
+                    }))
+        except:
+            countries.append(OrderedDict({
+            'iso3': item['value']['value'],
+            'country_name': item['itemLabel']['value'],
+            'name': item['itemLabel']['value'].lower(),
+            'alias': "None"
+            }))
+    wikicountry = pd.DataFrame(countries)
+    wikialiastmp = wikicountry[['iso3','country_name','alias']].loc[wikicountry['alias']!="None"].copy()
+    wikialiastmp.rename(columns={'alias':'name'},inplace=True)
+    wikioriginal = wikicountry[['iso3','country_name','name']].copy()
+    wikialias = pd.concat((wikioriginal,wikialiastmp)).drop_duplicates(subset='name',keep='first')
+    return(wikialias)
+
+
 """
 Main function to grab the WHO records for clinical trials.
 """
 
-def getWHOTrials(url, country_file, col_names, returnDF=False):
+def getWHOTrials(DATA_PATH, country_file, col_names, returnDF=False):
     today = date.today().strftime("%Y-%m-%d")
     # Natural Earth file to normalize country names.
     try:
-        ctry_dict = pd.read_csv(country_file).set_index("name").to_dict(orient="index")
-
-        raw_req = Request(WHO_URL)
-        raw_req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0')
-        raw_content = urlopen(raw_req)
-        raw = pd.read_csv(raw_content, dtype={"Date registration3": str})
+        ctry_df = pd.read_csv(country_file)
+        wikialias = get_country_iso()
+        combined = pd.concat((ctry_df,wikialias)).drop_duplicates(subset='name',keep='first')
+        ctry_dict = combined.set_index("name").to_dict(orient="index")
+        
+        raw_content = os.path.join(DATA_PATH, 'COVID19-web.xlsx'
+        raw = pd.read_excel(raw_content, dtype={"Date registration3": str}, engine='openpyxl')
         # Remove the data from ClinicalTrials.gov
         df = raw.loc[raw["Source Register"] != "ClinicalTrials.gov", :]
         df = df.copy()
@@ -665,18 +717,17 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
         df["abstract"] = None
         df["description"] = None
         df["isBasedOn"] = None
-        df["relatedTo"] = None
+        df["isRelatedTo"] = None
         df["keywords"] = None
         df["funding"] = df["Primary sponsor"].apply(
             lambda x: [{"funder": [{"@type": "Organization", "name": x, "role": "lead sponsor"}]}])
         df["hasResults"] = df["results yes no"].apply(binarize)
-        df["dateCreated"] = df["Date registration3"].apply(
-            lambda x: formatDate(x, "%Y%m%d"))
-        df["dateModified"] = df["Last Refreshed on"].apply(
-            lambda x: formatDate(x, "%d %B %Y"))
         df["datePublished"] = None
+        df["dateCreated"] = df["Date registration3"].apply(
+            lambda x: formatDate(x, "%Y%m%d")) 
+        df["dateModified"] = df["Last Refreshed on"].dt.strftime("%Y-%m-%d")
         df["curatedBy"] = df["Export date"].apply(lambda x: {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform", "identifier": "ICTRP",
-                                                             "url": "https://www.who.int/ictrp/en/", "versionDate": formatDate(x, "%m/%d/%Y %H:%M:%S %p"), "curationDate": today})
+                                                             "url": "https://www.who.int/ictrp/en/", "versionDate": x.strftime("%Y-%m-%d"), "curationDate": today})
         df["studyLocation"] = df.Countries.apply(lambda x: splitCountries(x, ctry_dict))
         # df["healthCondition"] = None
         df["healthCondition"] = df.Condition.apply(splitCondition)
@@ -699,7 +750,7 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
         if(returnDF):
             return(df)
         else:
-            return df[col_names].to_json(orient="records")
+            return (df[col_names].to_json(orient="records"))
     except:
         print("ERROR!  Cannot load the WHO Clinical Trials .csv")
         logging.warning("ERROR!  Cannot load the WHO Clinical Trials .csv")
@@ -710,7 +761,7 @@ def getWHOTrials(url, country_file, col_names, returnDF=False):
 # who.iloc[2]["funding"]
 
 def load_annotations():
-    docs = getWHOTrials(WHO_URL,COUNTRY_FILE, COL_NAMES)
+    docs = getWHOTrials(DATA_PATH,COUNTRY_FILE, COL_NAMES)
     for doc in json.loads(docs):
         yield doc
 
