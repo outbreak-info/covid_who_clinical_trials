@@ -48,7 +48,7 @@ dirname =os.path.dirname(os.path.realpath("naturalearth_countries.csv"))
 COUNTRY_FILE = "https://raw.githubusercontent.com/flaneuse/clinical_trials/master/naturalearth_countries.csv"
 COL_NAMES = ["@type", "_id", "identifier", "identifierSource", "url", "name", "alternateName", "abstract", "description", "funding", "author",
              "studyStatus", "studyEvent", "hasResults", "dateCreated", "datePublished", "dateModified", "curatedBy", "healthCondition", "keywords",
-             "studyDesign", "outcome", "eligibilityCriteria", "isBasedOn", "relatedTo", "studyLocation", "armGroup", "interventions", "interventionText"]
+             "studyDesign", "outcome", "eligibilityCriteria", "isBasedOn", "isRelatedTo", "studyLocation", "armGroup", "interventions", "interventionText"]
 
 # Generic helper functions
 
@@ -717,7 +717,7 @@ def getWHOTrials(DATA_PATH, country_file, col_names, returnDF=False):
         df["abstract"] = None
         df["description"] = None
         df["isBasedOn"] = None
-        df["relatedTo"] = None
+        df["isRelatedTo"] = None
         df["keywords"] = None
         df["funding"] = df["Primary sponsor"].apply(
             lambda x: [{"funder": [{"@type": "Organization", "name": x, "role": "lead sponsor"}]}])
