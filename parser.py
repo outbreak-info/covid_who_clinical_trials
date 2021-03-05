@@ -17,6 +17,8 @@ logging = config.logger
 Parser to grab COVID-19 / SARS-Cov-2 Clinical Trials metadata from the WHO's trial registry.
 Note that as of 2021, the file is hosted on sharepoint and is available for download manually as an xlsx file
 Sources:
+- WHO clinical trials registry platform: https://www.who.int/clinical-trials-registry-platform/
+- WHO "csv" (sharepoint .xlsx) link: https://bit.ly/3po1own
 - WHO data: https://www.who.int/ictrp/COVID19-web.csv
 - WHO data dictionary: https://www.who.int/ictrp/glossary/en/
 - EU-CTR data dictionary: https://eudract.ema.europa.eu/protocol.html
@@ -41,8 +43,6 @@ Sources:
     - The Netherlands National Trial Register (NTR)
 """
 
-#WHO_URL = "https://www.who.int/ictrp/COVID19-web.csv"
-DATA_PATH = #PATH FOR THE MANUALLY DOWNLOADED WHO DATA XLSX FILE
 # Names derived from Natural Earth to standardize to their ISO3 code (ADM0_A3) and NAME for geo-joins: https://www.naturalearthdata.com/downloads/10m-cultural-vectors/
 dirname =os.path.dirname(os.path.realpath("naturalearth_countries.csv"))
 COUNTRY_FILE = "https://raw.githubusercontent.com/flaneuse/clinical_trials/master/naturalearth_countries.csv"
@@ -691,7 +691,7 @@ def get_country_iso():
 Main function to grab the WHO records for clinical trials.
 """
 
-def getWHOTrials(DATA_PATH, country_file, col_names, returnDF=False):
+def getWHOTrials(country_file, col_names, returnDF=False):
     today = date.today().strftime("%Y-%m-%d")
     # Natural Earth file to normalize country names.
     try:
@@ -700,7 +700,7 @@ def getWHOTrials(DATA_PATH, country_file, col_names, returnDF=False):
         combined = pd.concat((ctry_df,wikialias)).drop_duplicates(subset='name',keep='first')
         ctry_dict = combined.set_index("name").to_dict(orient="index")
         
-        raw_content = os.path.join(DATA_PATH, 'COVID19-web.xlsx')
+        raw_content = '/data/outbreak/plugins/covid_who_clinical_trials/COVID19-web.xlsx'
         raw = pd.read_excel(raw_content, dtype={"Date registration3": str}, engine='openpyxl')
         # Remove the data from ClinicalTrials.gov
         df = raw.loc[raw["Source Register"] != "ClinicalTrials.gov", :]
@@ -761,7 +761,7 @@ def getWHOTrials(DATA_PATH, country_file, col_names, returnDF=False):
 # who.iloc[2]["funding"]
 
 def load_annotations():
-    docs = getWHOTrials(DATA_PATH,COUNTRY_FILE, COL_NAMES)
+    docs = getWHOTrials(COUNTRY_FILE, COL_NAMES)
     for doc in json.loads(docs):
         yield doc
 
