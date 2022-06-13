@@ -692,8 +692,7 @@ def getWHOTrials(country_file, col_names, returnDF=False):
         combined = pd.concat((ctry_df,wikialias)).drop_duplicates(subset='name',keep='first')
         ctry_dict = combined.set_index("name").to_dict(orient="index")
         
-        raw_content = '/data/outbreak/plugins/covid_who_clinical_trials/COVID19-web.xlsx'
-        raw_content = '/Users/julia/Downloads/COVID19-web.csv'
+        raw_content = '/data/outbreak/plugins/covid_who_clinical_trials/COVID19-web.csv'
         raw = pd.read_csv(raw_content, dtype={"Date registration3": str})
         # Remove the data from ClinicalTrials.gov
         df = raw.loc[raw["Source Register"] != "ClinicalTrials.gov", :]
