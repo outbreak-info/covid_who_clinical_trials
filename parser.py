@@ -9,9 +9,8 @@ from datetime import date, datetime
 
 from urllib.request import Request, urlopen
 
-from biothings import config
-logging = config.logger
-
+from outbreak_parser_tools.logger import get_logger
+logger = get_logger('covid_who_clinical_trials')
 
 """
 Parser to grab COVID-19 / SARS-Cov-2 Clinical Trials metadata from the WHO's trial registry.
@@ -52,13 +51,6 @@ COL_NAMES = ["@type", "_id", "identifier", "identifierSource", "url", "name", "a
 
 # Generic helper functions
 
-
-def formatDate(x, inputFormat="%B %d, %Y", outputFormat="%Y-%m-%d"):
-    try:
-        date_str = datetime.strptime(x, inputFormat).strftime(outputFormat)
-        return(date_str)
-    except:
-        print(f"Cannot format date {x}")
 
 
 def binarize(val):
@@ -627,7 +619,7 @@ def getInterventions(row):
             for intervention in interventions:
                 if(len(intervention) > 0):
                     if(intervention[0] != "\n"):
-                        parsed = dict([item.split(": ") for item in intervention if ": " in item])
+                        parsed = dict([item.split(": ", maxsplit=1) for item in intervention if ": " in item])
                         obj = {"@type": "Intervention"}
                         obj["description"] = "\n".join(intervention)
                         if("Product Name" in parsed.keys()):
@@ -701,7 +693,8 @@ def getWHOTrials(country_file, col_names, returnDF=False):
         ctry_dict = combined.set_index("name").to_dict(orient="index")
         
         raw_content = '/data/outbreak/plugins/covid_who_clinical_trials/COVID19-web.xlsx'
-        raw = pd.read_excel(raw_content, dtype={"Date registration3": str}, engine='openpyxl')
+        raw_content = '/Users/julia/Downloads/COVID19-web.csv'
+        raw = pd.read_csv(raw_content, dtype={"Date registration3": str})
         # Remove the data from ClinicalTrials.gov
         df = raw.loc[raw["Source Register"] != "ClinicalTrials.gov", :]
         df = df.copy()
@@ -723,11 +716,10 @@ def getWHOTrials(country_file, col_names, returnDF=False):
             lambda x: [{"funder": [{"@type": "Organization", "name": x, "role": "lead sponsor"}]}])
         df["hasResults"] = df["results yes no"].apply(binarize)
         df["datePublished"] = None
-        df["dateCreated"] = df["Date registration3"].apply(
-            lambda x: formatDate(x, "%Y%m%d")) 
-        df["dateModified"] = df["Last Refreshed on"].dt.strftime("%Y-%m-%d")
+        df["dateCreated"] = pd.to_datetime(df["Date registration3"], format='%Y%m%d', errors='coerce').dt.strftime('%Y-%m-%d')
+        df["dateModified"] = pd.to_datetime(df["Last Refreshed on"], format='%d %B %Y', errors='coerce').dt.strftime("%Y-%m-%d")
         df["curatedBy"] = df["Export date"].apply(lambda x: {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform", "identifier": "ICTRP",
-                                                             "url": "https://www.who.int/ictrp/en/", "versionDate": x.strftime("%Y-%m-%d"), "curationDate": today})
+            "url": "https://www.who.int/ictrp/en/", "versionDate": datetime.strptime(x, '%m/%d/%Y %I:%M:%S %p').strftime("%Y-%m-%d"), "curationDate": today})
         df["studyLocation"] = df.Countries.apply(lambda x: splitCountries(x, ctry_dict))
         # df["healthCondition"] = None
         df["healthCondition"] = df.Condition.apply(splitCondition)
@@ -752,8 +744,9 @@ def getWHOTrials(country_file, col_names, returnDF=False):
         else:
             return (df[col_names].to_json(orient="records"))
     except:
+        raise
         print("ERROR!  Cannot load the WHO Clinical Trials .csv")
-        logging.warning("ERROR!  Cannot load the WHO Clinical Trials .csv")
+        logger.warning("ERROR!  Cannot load the WHO Clinical Trials .csv")
 
 
 # who = getWHOTrials(WHO_URL, COUNTRY_FILE, COL_NAMES, True)
@@ -768,3 +761,8 @@ def load_annotations():
 # who.sample(1).iloc[0]['studyDesign']
 # who.sample(5).to_json("/Users/laurahughes/GitHub/umin-clinical-trials/outputs/WHO_parsed_sample.json", orient="records")
 # who[who.identifier =="EUCTR2020-001505-22-ES"].iloc[0]["studyDesign"]
+if __name__ == '__main__':
+    import json
+    j = [i for i in load_annotations()]
+    with open('d.json', 'w') as d:
+        json.dump(j, d)
