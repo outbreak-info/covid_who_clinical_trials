@@ -2,3 +2,4 @@
 .DS_Store
 *.pyc
 WHO_years.csv
+*.log

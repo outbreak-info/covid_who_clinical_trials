@@ -9,6 +9,7 @@ from datetime import date, datetime
 
 from urllib.request import Request, urlopen
 
+from outbreak_parser_tools.addendum import Addendum
 from outbreak_parser_tools.logger import get_logger
 logger = get_logger('covid_who_clinical_trials')
 
@@ -130,7 +131,7 @@ def convertSource(source):
     try:
         return(source_dict[source.upper()])
     except:
-        return(source)
+        return(str(source).upper())
 
 def standardizeCountry(input, ctry_dict, return_val = "country_name"):
     try:
@@ -574,7 +575,6 @@ def getWHODesign(row):
 
 def getArms(row):
     intervention_text = row.Intervention
-    id = row["Source Register"].upper()
     if(intervention_text == intervention_text):
         if(id == "CHICTR"):
             groups = intervention_text.split(";")
@@ -601,7 +601,6 @@ def getArms(row):
 
 def getInterventions(row):
     intervention_text = row.Intervention
-    id = row["Source Register"].upper()
     if(intervention_text == intervention_text):
         if(id == "CHICTR"):
             groups = intervention_text.split(";")
@@ -693,8 +692,7 @@ def getWHOTrials(country_file, col_names, returnDF=False):
         ctry_dict = combined.set_index("name").to_dict(orient="index")
         
         raw_content = '/data/outbreak/plugins/covid_who_clinical_trials/COVID19-web.xlsx'
-        raw_content = '/Users/julia/Downloads/COVID19-web.csv'
-        raw = pd.read_csv(raw_content, dtype={"Date registration3": str})
+        raw = pd.read_excel(raw_content, dtype={"Date registration3": str}, engine='openpyxl')
         # Remove the data from ClinicalTrials.gov
         df = raw.loc[raw["Source Register"] != "ClinicalTrials.gov", :]
         df = df.copy()
@@ -718,8 +716,14 @@ def getWHOTrials(country_file, col_names, returnDF=False):
         df["datePublished"] = None
         df["dateCreated"] = pd.to_datetime(df["Date registration3"], format='%Y%m%d', errors='coerce').dt.strftime('%Y-%m-%d')
         df["dateModified"] = pd.to_datetime(df["Last Refreshed on"], format='%d %B %Y', errors='coerce').dt.strftime("%Y-%m-%d")
-        df["curatedBy"] = df["Export date"].apply(lambda x: {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform", "identifier": "ICTRP",
-            "url": "https://www.who.int/ictrp/en/", "versionDate": datetime.strptime(x, '%m/%d/%Y %I:%M:%S %p').strftime("%Y-%m-%d"), "curationDate": today})
+        def curatedBy(x):
+            try:
+                versionDate = datetime.strptime(x, '%m/%d/%Y %I:%M:%S %p').strftime("%Y-%m-%d")
+            except:
+                versionDate = ''
+            return {"@type": "Organization", "name": "WHO International Clinical Trials Registry Platform", "identifier": "ICTRP",
+            "url": "https://www.who.int/ictrp/en/", "versionDate": versionDate, "curationDate": today}
+        df["curatedBy"] = df["Export date"].apply(curatedBy)
         df["studyLocation"] = df.Countries.apply(lambda x: splitCountries(x, ctry_dict))
         # df["healthCondition"] = None
         df["healthCondition"] = df.Condition.apply(splitCondition)
@@ -754,9 +758,9 @@ def getWHOTrials(country_file, col_names, returnDF=False):
 # who.iloc[2]["funding"]
 
 def load_annotations():
-    docs = getWHOTrials(COUNTRY_FILE, COL_NAMES)
-    for doc in json.loads(docs):
-        yield doc
+    docs = json.loads(getWHOTrials(COUNTRY_FILE, COL_NAMES))
+    Addendum.topic_adder().update(docs)
+    yield from docs
 
 # who.sample(1).iloc[0]['studyDesign']
 # who.sample(5).to_json("/Users/laurahughes/GitHub/umin-clinical-trials/outputs/WHO_parsed_sample.json", orient="records")
