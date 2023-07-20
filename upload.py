@@ -30,7 +30,6 @@ class ClinicalTrialUploaderWHO(biothings.hub.dataload.uploader.BaseSourceUploade
         "url": "https://www.who.int/ictrp/en/"
     }}
     idconverter = None
-    storage_class = biothings.hub.dataload.storage.BasicStorage
 
     def load_data(self, data_folder):
         if data_folder:
